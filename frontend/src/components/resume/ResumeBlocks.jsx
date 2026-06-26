@@ -64,7 +64,7 @@ export function ResumeExperience({ experience }) {
             <div className="resume-item-heading">
               <div>
                 <h4>{item.role}</h4>
-                <p>{item.company}{hasText(item.location) ? ` · ${item.location}` : ''}</p>
+                <p>{item.company}{hasText(item.location) ? ` - ${item.location}` : ''}</p>
               </div>
               <span>{item.period}</span>
             </div>
@@ -96,8 +96,8 @@ export function ResumeProjects({ projects }) {
               <h4>{project.name}</h4>
             </div>
             {hasText(project.description) ? <p>{project.description}</p> : null}
-            {hasItems(project.tech) ? <p className="resume-muted">{project.tech.join(' · ')}</p> : null}
-            {hasItems(project.links) ? <p className="resume-muted">{project.links.join(' · ')}</p> : null}
+            {hasItems(project.tech) ? <p className="resume-muted">{project.tech.join(' - ')}</p> : null}
+            {hasItems(project.links) ? <p className="resume-muted">{project.links.join(' - ')}</p> : null}
           </article>
         ))}
       </div>
@@ -118,7 +118,7 @@ export function ResumeEducation({ education }) {
             <div className="resume-item-heading">
               <div>
                 <h4>{item.degree}</h4>
-                <p>{item.institution}{hasText(item.location) ? ` · ${item.location}` : ''}</p>
+                <p>{item.institution}{hasText(item.location) ? ` - ${item.location}` : ''}</p>
               </div>
               <span>{item.period}</span>
             </div>

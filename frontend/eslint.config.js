@@ -15,6 +15,7 @@ export default [
       globals: {
         document: 'readonly',
         fetch: 'readonly',
+        FileReader: 'readonly',
         localStorage: 'readonly',
         matchMedia: 'readonly',
         navigator: 'readonly',

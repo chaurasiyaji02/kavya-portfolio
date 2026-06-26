@@ -7,7 +7,7 @@ export const profile = {
   location: 'India',
   availability: 'Open to internships and full-stack opportunities',
   resumeUrl: '/resume',
-  resumeBuilderUrl: '#contact',
+  resumeBuilderUrl: '/builder',
   contactUrl: '#contact',
   email: 'kavya@example.com',
   socialLinks: [
