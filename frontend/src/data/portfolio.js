@@ -6,7 +6,7 @@ export const profile = {
     'I create clean interfaces, reliable backend foundations, and thoughtful user experiences that feel fast, modern, and easy to use.',
   location: 'India',
   availability: 'Open to internships and full-stack opportunities',
-  resumeUrl: '#experience',
+  resumeUrl: '/resume',
   resumeBuilderUrl: '#contact',
   contactUrl: '#contact',
   email: 'kavya@example.com',
