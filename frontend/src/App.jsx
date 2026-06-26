@@ -1,35 +1,46 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import AnimatedBackground from './components/AnimatedBackground.jsx';
+import CustomCursor from './components/CustomCursor.jsx';
+import LoadingScreen from './components/LoadingScreen.jsx';
+import ScrollProgress from './components/ScrollProgress.jsx';
+import ScrollToTop from './components/ScrollToTop.jsx';
+import ThemeProvider from './components/ThemeProvider.jsx';
+import AppLayout from './layouts/AppLayout.jsx';
+import AboutPage from './pages/AboutPage.jsx';
+import ContactPage from './pages/ContactPage.jsx';
+import HomePage from './pages/HomePage.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
+import WorkPage from './pages/WorkPage.jsx';
+
+function AppRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route element={<AppLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="work" element={<WorkPage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </AnimatePresence>
+  );
+}
 
 function App() {
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-50">
-      <section className="mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-6 py-16">
-        <motion.p
-          className="text-sm font-medium uppercase tracking-[0.2em] text-teal-300"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          Dynamic Portfolio Scaffold
-        </motion.p>
-        <motion.h1
-          className="mt-4 max-w-3xl text-4xl font-semibold leading-tight sm:text-6xl"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          Kavya Portfolio
-        </motion.h1>
-        <motion.p
-          className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          Initial React, Tailwind CSS, Framer Motion, Spring Boot, and PostgreSQL project structure.
-        </motion.p>
-      </section>
-    </main>
+    <ThemeProvider>
+      <LoadingScreen />
+      <ScrollProgress />
+      <CustomCursor />
+      <AnimatedBackground />
+      <AppRoutes />
+      <ScrollToTop />
+    </ThemeProvider>
   );
 }
 

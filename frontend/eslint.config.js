@@ -11,6 +11,12 @@ export default [
       sourceType: 'module',
       globals: {
         document: 'readonly',
+        fetch: 'readonly',
+        localStorage: 'readonly',
+        matchMedia: 'readonly',
+        navigator: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
         window: 'readonly',
       },
       parserOptions: {
@@ -26,6 +32,7 @@ export default [
     rules: {
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
+      'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
     },
     settings: {
