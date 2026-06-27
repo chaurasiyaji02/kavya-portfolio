@@ -1,14 +1,18 @@
 import { AnimatePresence } from 'framer-motion';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import AnimatedBackground from './components/AnimatedBackground.jsx';
+import AuthProvider from './components/AuthProvider.jsx';
 import CustomCursor from './components/CustomCursor.jsx';
 import LoadingScreen from './components/LoadingScreen.jsx';
 import PortfolioDataProvider from './components/PortfolioDataProvider.jsx';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute.jsx';
 import ScrollProgress from './components/ScrollProgress.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ThemeProvider from './components/ThemeProvider.jsx';
 import AppLayout from './layouts/AppLayout.jsx';
 import AboutPage from './pages/AboutPage.jsx';
+import AdminDashboardPage from './pages/AdminDashboardPage.jsx';
+import AdminLoginPage from './pages/AdminLoginPage.jsx';
 import BuilderPage from './pages/BuilderPage.jsx';
 import CheckerPage from './pages/CheckerPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
@@ -31,6 +35,10 @@ function AppRoutes() {
           <Route path="checker" element={<CheckerPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />
+          <Route path="admin/login" element={<AdminLoginPage />} />
+          <Route element={<ProtectedAdminRoute />}>
+            <Route path="admin" element={<AdminDashboardPage />} />
+          </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
@@ -45,9 +53,11 @@ function App() {
       <ScrollProgress />
       <CustomCursor />
       <AnimatedBackground />
-      <PortfolioDataProvider>
-        <AppRoutes />
-      </PortfolioDataProvider>
+      <AuthProvider>
+        <PortfolioDataProvider>
+          <AppRoutes />
+        </PortfolioDataProvider>
+      </AuthProvider>
       <ScrollToTop />
     </ThemeProvider>
   );

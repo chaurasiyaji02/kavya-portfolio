@@ -36,6 +36,13 @@ public class GlobalExceptionHandler {
     return buildResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), request, Map.of());
   }
 
+  @ExceptionHandler(UnauthorizedException.class)
+  ResponseEntity<ErrorResponse> handleUnauthorized(
+      UnauthorizedException exception,
+      HttpServletRequest request) {
+    return buildResponse(HttpStatus.UNAUTHORIZED, exception.getMessage(), request, Map.of());
+  }
+
   @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class})
   ResponseEntity<ErrorResponse> handleMalformedRequest(
       Exception exception,

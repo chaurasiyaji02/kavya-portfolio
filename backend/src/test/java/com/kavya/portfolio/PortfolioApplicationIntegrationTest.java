@@ -28,6 +28,8 @@ import org.springframework.test.context.DynamicPropertySource;
 class PortfolioApplicationIntegrationTest {
 
   private static final EmbeddedPostgres POSTGRES = startPostgres();
+  private static final String ADMIN_EMAIL = "admin.integration@example.com";
+  private static final String ADMIN_PASSWORD = "IntegrationPassword!42";
 
   @Autowired
   private TestRestTemplate restTemplate;
@@ -40,6 +42,11 @@ class PortfolioApplicationIntegrationTest {
     registry.add("spring.datasource.url", PortfolioApplicationIntegrationTest::jdbcUrl);
     registry.add("spring.datasource.username", () -> "postgres");
     registry.add("spring.datasource.password", () -> "postgres");
+    registry.add("app.security.jwt-secret",
+        () -> "integration-test-jwt-secret-with-more-than-thirty-two-bytes");
+    registry.add("app.security.jwt-expiration", () -> "PT15M");
+    registry.add("app.security.admin-email", () -> ADMIN_EMAIL);
+    registry.add("app.security.admin-password", () -> ADMIN_PASSWORD);
   }
 
   @AfterAll
@@ -112,6 +119,42 @@ class PortfolioApplicationIntegrationTest {
   }
 
   @Test
+  void authenticatesAdminAndProtectsAdminApis() {
+    ResponseEntity<JsonNode> anonymous = restTemplate.getForEntity(
+        "/api/v1/admin/contact-messages", JsonNode.class);
+    assertThat(anonymous.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    assertThat(anonymous.getBody()).isNotNull();
+    assertThat(anonymous.getBody().path("message").asText()).contains("Authentication");
+
+    ResponseEntity<JsonNode> invalidLogin = restTemplate.postForEntity(
+        "/api/v1/auth/login",
+        Map.of("email", ADMIN_EMAIL, "password", "incorrect-password"),
+        JsonNode.class);
+    assertThat(invalidLogin.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+
+    ResponseEntity<JsonNode> login = login();
+    assertThat(login.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(login.getBody()).isNotNull();
+    assertThat(login.getBody().path("data").path("token").asText()).isNotBlank();
+    assertThat(login.getBody().path("data").path("tokenType").asText()).isEqualTo("Bearer");
+    assertThat(login.getBody().path("data").path("role").asText()).isEqualTo("ADMIN");
+
+    ResponseEntity<JsonNode> authorized = restTemplate.exchange(
+        "/api/v1/admin/contact-messages",
+        HttpMethod.GET,
+        new HttpEntity<>(authorizationHeaders()),
+        JsonNode.class);
+    assertThat(authorized.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+    String passwordHash = jdbcTemplate.queryForObject(
+        "select password_hash from admin_users where email = ?",
+        String.class,
+        ADMIN_EMAIL);
+    assertThat(passwordHash).startsWith("$2");
+    assertThat(passwordHash).doesNotContain(ADMIN_PASSWORD);
+  }
+
+  @Test
   void supportsProjectAdminCrudAndNotFoundErrors() {
     Map<String, Object> createRequest = Map.of(
         "title", "Integration Test Project",
@@ -122,8 +165,11 @@ class PortfolioApplicationIntegrationTest {
         "displayOrder", 99,
         "technologies", List.of("Java", "Spring Boot"));
 
-    ResponseEntity<JsonNode> created = restTemplate.postForEntity(
-        "/api/v1/admin/projects", createRequest, JsonNode.class);
+    ResponseEntity<JsonNode> created = restTemplate.exchange(
+        "/api/v1/admin/projects",
+        HttpMethod.POST,
+        new HttpEntity<>(createRequest, authorizationHeaders()),
+        JsonNode.class);
     assertThat(created.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     assertThat(created.getBody()).isNotNull();
     long id = created.getBody().path("data").path("id").asLong();
@@ -139,7 +185,7 @@ class PortfolioApplicationIntegrationTest {
     ResponseEntity<JsonNode> updated = restTemplate.exchange(
         "/api/v1/admin/projects/" + id,
         HttpMethod.PUT,
-        new HttpEntity<>(updateRequest),
+        new HttpEntity<>(updateRequest, authorizationHeaders()),
         JsonNode.class);
     assertThat(updated.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(updated.getBody()).isNotNull();
@@ -147,7 +193,10 @@ class PortfolioApplicationIntegrationTest {
     assertThat(updated.getBody().path("data").path("technologies").size()).isEqualTo(2);
 
     ResponseEntity<Void> deleted = restTemplate.exchange(
-        "/api/v1/admin/projects/" + id, HttpMethod.DELETE, HttpEntity.EMPTY, Void.class);
+        "/api/v1/admin/projects/" + id,
+        HttpMethod.DELETE,
+        new HttpEntity<>(authorizationHeaders()),
+        Void.class);
     assertThat(deleted.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
     ResponseEntity<JsonNode> missing = restTemplate.getForEntity(
@@ -174,14 +223,17 @@ class PortfolioApplicationIntegrationTest {
     ResponseEntity<JsonNode> updated = restTemplate.exchange(
         "/api/v1/admin/contact-messages/" + id,
         HttpMethod.PUT,
-        new HttpEntity<>(Map.of("read", true)),
+        new HttpEntity<>(Map.of("read", true), authorizationHeaders()),
         JsonNode.class);
     assertThat(updated.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(updated.getBody()).isNotNull();
     assertThat(updated.getBody().path("data").path("read").asBoolean()).isTrue();
 
-    ResponseEntity<JsonNode> messages = restTemplate.getForEntity(
-        "/api/v1/admin/contact-messages", JsonNode.class);
+    ResponseEntity<JsonNode> messages = restTemplate.exchange(
+        "/api/v1/admin/contact-messages",
+        HttpMethod.GET,
+        new HttpEntity<>(authorizationHeaders()),
+        JsonNode.class);
     assertThat(messages.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(messages.getBody()).isNotNull();
     assertThat(messages.getBody().path("data").size()).isGreaterThanOrEqualTo(1);
@@ -189,7 +241,7 @@ class PortfolioApplicationIntegrationTest {
     ResponseEntity<Void> deleted = restTemplate.exchange(
         "/api/v1/admin/contact-messages/" + id,
         HttpMethod.DELETE,
-        HttpEntity.EMPTY,
+        new HttpEntity<>(authorizationHeaders()),
         Void.class);
     assertThat(deleted.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
   }
@@ -201,8 +253,11 @@ class PortfolioApplicationIntegrationTest {
         "name", "",
         "proficiencyLevel", 101,
         "displayOrder", 0);
-    ResponseEntity<JsonNode> response = restTemplate.postForEntity(
-        "/api/v1/admin/skills", invalidSkill, JsonNode.class);
+    ResponseEntity<JsonNode> response = restTemplate.exchange(
+        "/api/v1/admin/skills",
+        HttpMethod.POST,
+        new HttpEntity<>(invalidSkill, authorizationHeaders()),
+        JsonNode.class);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     assertThat(response.getBody()).isNotNull();
     assertThat(response.getBody().path("validationErrors").has("name")).isTrue();
@@ -223,5 +278,22 @@ class PortfolioApplicationIntegrationTest {
     } catch (SQLException exception) {
       throw new IllegalStateException("Unable to read embedded PostgreSQL URL.", exception);
     }
+  }
+
+  private ResponseEntity<JsonNode> login() {
+    return restTemplate.postForEntity(
+        "/api/v1/auth/login",
+        Map.of("email", ADMIN_EMAIL, "password", ADMIN_PASSWORD),
+        JsonNode.class);
+  }
+
+  private HttpHeaders authorizationHeaders() {
+    ResponseEntity<JsonNode> login = login();
+    assertThat(login.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(login.getBody()).isNotNull();
+    String token = login.getBody().path("data").path("token").asText();
+    HttpHeaders headers = new HttpHeaders();
+    headers.setBearerAuth(token);
+    return headers;
   }
 }
