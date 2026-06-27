@@ -195,6 +195,7 @@ Check:
 - Public portfolio API requests succeed from the production frontend.
 - Admin login succeeds and protected API requests return `401` without a JWT.
 - Contact submission succeeds.
-- Builder and Checker make no backend request and retain data only in-browser.
+- Builder and Checker never transmit visitor resume data and retain it only
+  in-browser. Public portfolio content requests may still run on these routes.
 - Open Graph title, description, canonical URL, and image use production URLs.
 - Backend health reports `UP`.
