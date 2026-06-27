@@ -1,12 +1,15 @@
 import { motion } from 'framer-motion';
 import { useMemo, useState } from 'react';
 import PageTransition from '../components/PageTransition.jsx';
+import PortfolioDataStatus from '../components/PortfolioDataStatus.jsx';
+import { usePortfolioData } from '../components/PortfolioDataProvider.jsx';
 import ResumeActions from '../components/resume/ResumeActions.jsx';
 import ResumePreview from '../components/resume/ResumePreview.jsx';
 import TemplateSwitcher from '../components/resume/TemplateSwitcher.jsx';
-import { resumeData, resumeTemplates } from '../data/resume.js';
+import { resumeTemplates } from '../data/resume.js';
 
 function ResumePage() {
+  const { error, loading, resumeData, retry } = usePortfolioData();
   const [activeTemplateId, setActiveTemplateId] = useState(resumeTemplates[0]?.id ?? 'ats-classic');
   const activeTemplate = useMemo(
     () => resumeTemplates.find((template) => template.id === activeTemplateId) ?? resumeTemplates[0],
@@ -16,6 +19,7 @@ function ResumePage() {
   return (
     <PageTransition>
       <section className="mx-auto max-w-7xl py-10 lg:py-16">
+        <PortfolioDataStatus error={error} loading={loading} onRetry={retry} />
         <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
           <div className="print:hidden">
             <motion.div

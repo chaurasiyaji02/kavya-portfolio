@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import AnimatedBackground from './components/AnimatedBackground.jsx';
 import CustomCursor from './components/CustomCursor.jsx';
 import LoadingScreen from './components/LoadingScreen.jsx';
+import PortfolioDataProvider from './components/PortfolioDataProvider.jsx';
 import ScrollProgress from './components/ScrollProgress.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ThemeProvider from './components/ThemeProvider.jsx';
@@ -44,7 +45,9 @@ function App() {
       <ScrollProgress />
       <CustomCursor />
       <AnimatedBackground />
-      <AppRoutes />
+      <PortfolioDataProvider>
+        <AppRoutes />
+      </PortfolioDataProvider>
       <ScrollToTop />
     </ThemeProvider>
   );
