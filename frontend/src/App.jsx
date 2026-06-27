@@ -9,6 +9,7 @@ import ThemeProvider from './components/ThemeProvider.jsx';
 import AppLayout from './layouts/AppLayout.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import BuilderPage from './pages/BuilderPage.jsx';
+import CheckerPage from './pages/CheckerPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
@@ -26,6 +27,7 @@ function AppRoutes() {
           <Route path="work" element={<WorkPage />} />
           <Route path="resume" element={<ResumePage />} />
           <Route path="builder" element={<BuilderPage />} />
+          <Route path="checker" element={<CheckerPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="*" element={<NotFoundPage />} />

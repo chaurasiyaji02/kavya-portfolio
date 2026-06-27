@@ -33,8 +33,16 @@ function HeroSection({ profile }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.18, duration: 0.58 }}
         >
-          {profile.headline}
+          {profile.name}
         </motion.h1>
+        <motion.h2
+          className="mt-5 max-w-3xl text-2xl font-semibold leading-snug text-slate-900 dark:text-white sm:text-3xl"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.22, duration: 0.55 }}
+        >
+          {profile.headline}
+        </motion.h2>
         {profile.summary ? (
           <motion.p
             className="mt-6 max-w-2xl text-base leading-8 text-slate-600 dark:text-slate-300 sm:text-lg"
@@ -51,9 +59,9 @@ function HeroSection({ profile }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.32, duration: 0.55 }}
         >
-          <CtaLink href={profile.resumeUrl} label="View Resume" variant="primary" />
-          <CtaLink href={profile.resumeBuilderUrl} label="Build Your Resume" variant="secondary" />
-          <CtaLink href={profile.contactUrl} label="Contact Me" variant="ghost" />
+          <CtaLink href="#projects" label="Explore Projects" variant="primary" />
+          <CtaLink href={profile.contactUrl} label="Contact Me" variant="secondary" />
+          <CtaLink href={profile.resumeUrl} label="View Resume" variant="ghost" />
         </motion.div>
       </div>
 
@@ -68,8 +76,8 @@ function HeroSection({ profile }) {
           <div className="relative">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-sm text-white/55">{profile.location}</p>
-                <h2 className="mt-2 text-2xl font-semibold">{profile.name}</h2>
+                <p className="text-sm text-white/55">Currently learning and building</p>
+                <h3 className="mt-2 text-2xl font-semibold">Full-stack development</h3>
               </div>
               <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white/10 text-xl font-semibold ring-1 ring-white/10">
                 KC
@@ -83,6 +91,19 @@ function HeroSection({ profile }) {
                     <p className="mt-1 text-xs leading-5 text-white/55">{stat.label}</p>
                   </div>
                 ))}
+              </div>
+            ) : null}
+            {profile.focusAreas?.length ? (
+              <div className="mt-6 border-t border-white/10 pt-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/45">Current focus</p>
+                <ul className="mt-3 grid gap-2 text-sm text-white/75">
+                  {profile.focusAreas.map((area) => (
+                    <li className="flex items-center gap-3" key={area}>
+                      <span className="h-1.5 w-1.5 rounded-full bg-teal-300" />
+                      {area}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ) : null}
             {profile.socialLinks?.length ? (

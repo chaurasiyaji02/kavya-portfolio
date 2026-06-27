@@ -11,7 +11,7 @@ function ExperienceSection({ experience }) {
       <SectionHeading
         eyebrow="Experience"
         title="Internship and project experience with real implementation habits."
-        description="Structured like timeline data so future admin-managed entries can drop into the same cards."
+        description="Internship and project work where responsive interfaces, collaboration, and steady delivery came together."
       />
       <div className="mt-8 grid gap-4">
         {experience.map((item, index) => (

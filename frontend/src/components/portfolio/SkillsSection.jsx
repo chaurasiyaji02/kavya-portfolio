@@ -11,7 +11,7 @@ function SkillsSection({ skills }) {
       <SectionHeading
         eyebrow="Skills"
         title="A practical stack for full-stack product development."
-        description="Organized by category so future backend content can power the same interface without redesigning the UI."
+        description="The technologies I use today and the backend skills I am actively strengthening through hands-on projects."
         align="center"
       />
       <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">

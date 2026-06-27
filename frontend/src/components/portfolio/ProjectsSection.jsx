@@ -11,8 +11,8 @@ function ProjectsSection({ projects }) {
     <section className="mx-auto max-w-7xl py-12 lg:py-20" id="projects">
       <SectionHeading
         eyebrow="Projects"
-        title="Selected builds with product-shaped structure."
-        description="Placeholder entries are modeled like real project records, with links, status, summaries, and editable tech stacks."
+        title="Selected builds shaped by curiosity and practical learning."
+        description="A mix of polished frontend work, Java exploration, and useful tools built to solve real problems."
       />
       <div className="mt-8 grid gap-5 lg:grid-cols-3">
         {projects.map((project, index) => (

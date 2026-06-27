@@ -1,13 +1,14 @@
 export const profile = {
   name: 'Kavya Chaurasiya',
-  role: 'Full-Stack Developer',
-  headline: 'Building polished, scalable web experiences with React, Java, and product-minded engineering.',
+  role: 'Java & Full-Stack Developer',
+  headline: 'I build thoughtful web experiences while growing deeper into Java and full-stack engineering.',
   summary:
-    'I create clean interfaces, reliable backend foundations, and thoughtful user experiences that feel fast, modern, and easy to use.',
+    'I am a computer science student turning ideas into responsive React interfaces and dependable Java foundations, with a focus on practical projects, clean code, and steady learning.',
   location: 'India',
   availability: 'Open to internships and full-stack opportunities',
   resumeUrl: '/resume',
   resumeBuilderUrl: '/builder',
+  resumeCheckerUrl: '/checker',
   contactUrl: '#contact',
   email: 'kavya@example.com',
   socialLinks: [
@@ -15,10 +16,11 @@ export const profile = {
     { label: 'LinkedIn', href: 'https://www.linkedin.com' },
   ],
   stats: [
-    { value: '12+', label: 'Projects shipped' },
-    { value: '4', label: 'Core stacks' },
-    { value: '100%', label: 'Learning mindset' },
+    { value: 'React', label: 'Interface craft' },
+    { value: 'Java', label: 'Core language' },
+    { value: 'Spring', label: 'Backend focus' },
   ],
+  focusAreas: ['Responsive frontend systems', 'Java and Spring Boot', 'PostgreSQL and REST APIs'],
 };
 
 export const about = {
@@ -54,34 +56,58 @@ export const skills = [
 
 export const projects = [
   {
-    title: 'Resume Builder Platform',
-    status: 'Planned',
+    title: 'Developer Portfolio System',
+    status: 'In progress',
     description:
-      'A dynamic resume creation product with guided inputs, premium templates, downloadable exports, and admin-managed content.',
-    techStack: ['React', 'Spring Boot', 'PostgreSQL', 'Tailwind CSS'],
+      'A responsive portfolio experience with reusable content sections, purposeful motion, theme support, and a scalable frontend structure.',
+    techStack: ['React', 'Framer Motion', 'React Router', 'Tailwind CSS'],
     githubUrl: 'https://github.com/chaurasiyaji02/kavya-portfolio',
     liveUrl: '#',
     accent: 'from-teal-300/30 via-indigo-300/20 to-transparent',
   },
   {
-    title: 'Developer Portfolio System',
-    status: 'In progress',
+    title: 'Java Project Showcase API',
+    status: 'Learning build',
     description:
-      'A modern portfolio experience designed for editable sections, smooth motion, theme support, and future backend integration.',
-    techStack: ['React', 'Framer Motion', 'React Router', 'Vite'],
+      'A structured REST API concept for projects, education, and certifications, designed while deepening Spring Boot and database skills.',
+    techStack: ['Java', 'Spring Boot', 'JPA', 'PostgreSQL'],
     githubUrl: 'https://github.com/chaurasiyaji02/kavya-portfolio',
     liveUrl: '#',
     accent: 'from-rose-300/30 via-teal-300/20 to-transparent',
   },
   {
-    title: 'Project Showcase API',
-    status: 'Concept',
+    title: 'Private Resume Toolkit',
+    status: 'Frontend complete',
     description:
-      'A structured API layer for projects, certifications, education, and contact messages with PostgreSQL persistence.',
-    techStack: ['Java', 'Spring Boot', 'JPA', 'PostgreSQL'],
+      'A browser-only resume builder and checker with reusable previews, local storage, ATS guidance, and no external data sharing.',
+    techStack: ['React', 'LocalStorage', 'Framer Motion', 'Tailwind CSS'],
     githubUrl: 'https://github.com/chaurasiyaji02/kavya-portfolio',
     liveUrl: '#',
     accent: 'from-indigo-300/30 via-sky-300/20 to-transparent',
+  },
+];
+
+export const careerTools = [
+  {
+    title: 'View Kavya Resume',
+    description: "Browse Kavya's experience, education, skills, and projects across five resume layouts.",
+    href: '/resume',
+    action: 'View resume',
+    meta: 'Portfolio companion',
+  },
+  {
+    title: 'Build Your Resume',
+    description: 'Create a private resume with live previews and browser-only storage.',
+    href: '/builder',
+    action: 'Open builder',
+    meta: 'Free local tool',
+  },
+  {
+    title: 'Check Your Resume',
+    description: 'Review resume completeness, ATS signals, strengths, and practical improvements.',
+    href: '/checker',
+    action: 'Check resume',
+    meta: 'Private local review',
   },
 ];
 
@@ -129,13 +155,12 @@ export const experience = [
 ];
 
 export const contactCta = {
-  eyebrow: 'Ready for the next step',
-  title: 'Let us build something polished, useful, and production-minded.',
+  eyebrow: 'Let us connect',
+  title: 'Have an internship, project, or idea worth building?',
   body:
-    'This static portfolio foundation is ready for real content, backend-powered editing, and future resume builder workflows.',
+    'I am always glad to talk about practical full-stack work, Java opportunities, and teams where curiosity and thoughtful execution matter.',
   actions: [
-    { label: 'View Resume', href: profile.resumeUrl, variant: 'primary' },
-    { label: 'Build Your Resume', href: profile.resumeBuilderUrl, variant: 'secondary' },
-    { label: 'Contact Me', href: profile.contactUrl, variant: 'ghost' },
+    { label: 'Contact Me', href: profile.contactUrl, variant: 'primary' },
+    { label: 'Explore Projects', href: '#projects', variant: 'secondary' },
   ],
 };
