@@ -18,6 +18,7 @@ import ContactMessagesPanel from '../components/admin/ContactMessagesPanel.jsx';
 import { useAuth } from '../components/AuthProvider.jsx';
 import PageTransition from '../components/PageTransition.jsx';
 import { usePortfolioData } from '../components/PortfolioDataProvider.jsx';
+import Seo from '../components/Seo.jsx';
 
 const resourceIcons = {
   projects: FolderKanban,
@@ -59,6 +60,12 @@ function AdminDashboardPage() {
 
   return (
     <PageTransition>
+      <Seo
+        noIndex
+        description="Protected portfolio content administration."
+        path="/admin"
+        title="Content Dashboard | Kavya Portfolio"
+      />
       <AdminToast toast={toast} onClose={() => setToast(null)} />
       <section className="mx-auto max-w-7xl py-8 lg:py-12">
         <header className="flex flex-wrap items-start justify-between gap-5 border-b border-slate-900/10 pb-6 dark:border-white/10">

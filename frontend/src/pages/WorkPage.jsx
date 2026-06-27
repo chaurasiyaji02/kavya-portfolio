@@ -1,10 +1,16 @@
 import PageTransition from '../components/PageTransition.jsx';
+import Seo from '../components/Seo.jsx';
 
 const lanes = ['Featured', 'Case studies', 'Experiments'];
 
 function WorkPage() {
   return (
     <PageTransition>
+      <Seo
+        description="Explore Kavya's selected full-stack projects, case studies, and development experiments."
+        path="/work"
+        title="Projects and Work | Kavya Portfolio"
+      />
       <section className="mx-auto max-w-7xl py-10 lg:py-16">
         <div className="glass-panel rounded-[2rem] p-6 sm:p-8 lg:p-10">
           <p className="text-sm font-semibold text-teal-600 dark:text-teal-300">Work</p>

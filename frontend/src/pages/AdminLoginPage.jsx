@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import PageTransition from '../components/PageTransition.jsx';
+import Seo from '../components/Seo.jsx';
 import { useAuth } from '../components/AuthProvider.jsx';
 
 function AdminLoginPage() {
@@ -35,6 +36,12 @@ function AdminLoginPage() {
 
   return (
     <PageTransition>
+      <Seo
+        noIndex
+        description="Secure administrator access for Kavya's portfolio content dashboard."
+        path="/admin/login"
+        title="Admin Login | Kavya Portfolio"
+      />
       <section className="mx-auto grid min-h-[68vh] max-w-7xl items-center gap-10 py-10 lg:grid-cols-[0.9fr_1.1fr] lg:py-16">
         <div className="max-w-xl">
           <p className="text-sm font-semibold text-teal-600 dark:text-teal-300">Admin access</p>

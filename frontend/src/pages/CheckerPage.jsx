@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PageTransition from '../components/PageTransition.jsx';
+import Seo from '../components/Seo.jsx';
 import { loadStoredResumeData } from '../components/builder/builderData.js';
 import CheckerResults from '../components/checker/CheckerResults.jsx';
 import CheckerScore from '../components/checker/CheckerScore.jsx';
@@ -24,6 +25,11 @@ function CheckerPage() {
 
   return (
     <PageTransition>
+      <Seo
+        description="Check resume completeness, ATS keywords, action verbs, and improvement opportunities locally in your browser."
+        path="/checker"
+        title="Free Local Resume Checker | Kavya Portfolio"
+      />
       <section className="mx-auto max-w-7xl py-10 lg:py-16">
         <header className="max-w-4xl">
           <p className="text-sm font-semibold text-teal-600 dark:text-teal-300">Resume Checker</p>

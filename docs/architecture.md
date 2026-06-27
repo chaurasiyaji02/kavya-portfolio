@@ -8,7 +8,7 @@ The project is split into three main layers:
 - `backend`: Spring Boot API for dynamic content and integrations.
 - `database`: PostgreSQL for persistent portfolio data.
 
-## Planned Boundaries
+## Application Boundaries
 
 - The frontend should communicate with the backend through typed API helpers in `frontend/src/lib`.
 - The backend should keep controllers thin and place business rules in service classes.
@@ -21,19 +21,17 @@ business logic, persistence, and JPA models into controller, DTO, service,
 repository, and entity packages. Flyway owns schema creation while Hibernate runs
 in validation mode.
 
-Spring Security is present as infrastructure only. Requests are currently stateless
-and permitted without authentication until a dedicated authentication design is
-implemented.
+Spring Security uses stateless JWT authentication for administration. Admin
+passwords are BCrypt hashed and the frontend keeps the JWT in tab-scoped
+`sessionStorage`.
 
 Public content reads live under `/api/v1/{resource}`. Content mutations and contact
-message management live under `/api/v1/admin/**`; these routes remain open only
-until admin authentication is implemented.
+message management live under `/api/v1/admin/**`; these routes require the
+`ADMIN` role.
 
-## Future Modules
+## Current Modules
 
-- Profile and hero content
-- Projects and case studies
-- Skills and experience timeline
+- Dynamic portfolio and resume content
+- Browser-only resume builder and checker
 - Contact form submissions
-- Admin content management
-- Analytics or visitor event tracking
+- Protected admin content management

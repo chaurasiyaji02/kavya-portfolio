@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import PageTransition from '../components/PageTransition.jsx';
+import Seo from '../components/Seo.jsx';
 import BuilderForm from '../components/builder/BuilderForm.jsx';
 import { clearStoredResumeData, createBlankResumeData, createSampleResumeData, loadStoredResumeData, normalizeResumeData, storeResumeData } from '../components/builder/builderData.js';
 import ResumePreview from '../components/resume/ResumePreview.jsx';
@@ -29,6 +30,11 @@ function BuilderPage() {
 
   return (
     <PageTransition>
+      <Seo
+        description="Build and preview a resume privately in your browser with five responsive templates. Your data never leaves your device."
+        path="/builder"
+        title="Free Private Resume Builder | Kavya Portfolio"
+      />
       <section className="mx-auto max-w-7xl py-10 lg:py-16">
         <div className="glass-panel rounded-[2rem] p-6 sm:p-8 print:hidden">
           <p className="text-sm font-semibold text-teal-600 dark:text-teal-300">Visitor Resume Builder</p>

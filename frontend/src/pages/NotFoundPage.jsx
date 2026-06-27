@@ -1,9 +1,16 @@
 import { Link } from 'react-router-dom';
 import PageTransition from '../components/PageTransition.jsx';
+import Seo from '../components/Seo.jsx';
 
 function NotFoundPage() {
   return (
     <PageTransition>
+      <Seo
+        noIndex
+        description="The requested portfolio page could not be found."
+        path="/404"
+        title="Page Not Found | Kavya Portfolio"
+      />
       <section className="mx-auto grid min-h-[60vh] max-w-4xl place-items-center py-16 text-center">
         <div className="glass-panel rounded-[2rem] p-8 sm:p-12">
           <p className="text-sm font-semibold text-teal-600 dark:text-teal-300">404</p>

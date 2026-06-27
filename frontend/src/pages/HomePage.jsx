@@ -1,5 +1,6 @@
 import PageTransition from '../components/PageTransition.jsx';
 import PortfolioDataStatus from '../components/PortfolioDataStatus.jsx';
+import Seo from '../components/Seo.jsx';
 import { usePortfolioData } from '../components/PortfolioDataProvider.jsx';
 import AboutSection from '../components/portfolio/AboutSection.jsx';
 import CareerToolsSection from '../components/portfolio/CareerToolsSection.jsx';
@@ -17,6 +18,10 @@ function HomePage() {
 
   return (
     <PageTransition>
+      <Seo
+        description="Explore Kavya's Java and full-stack development projects, skills, education, experience, and private browser-only career tools."
+        title="Kavya Chaurasiya | Java & Full-Stack Developer"
+      />
       <PortfolioDataStatus error={error} loading={loading} onRetry={retry} />
       <HeroSection profile={content.profile} />
       <AboutSection about={about} />

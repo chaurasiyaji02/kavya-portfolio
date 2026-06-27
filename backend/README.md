@@ -11,8 +11,9 @@ Spring Boot foundation for the versioned portfolio REST API.
 - springdoc OpenAPI and Swagger UI
 - Maven Wrapper
 
-Authentication is intentionally not enabled yet. Spring Security is configured with
-stateless sessions and currently permits every request.
+Spring Security uses stateless JWT authentication for `/api/v1/admin/**`.
+Passwords are BCrypt hashed and the initial administrator is seeded from
+environment variables.
 
 ## Local Setup
 
@@ -30,7 +31,8 @@ create database kavya_portfolio owner portfolio_user;
 Copy-Item .env.example .env
 ```
 
-4. Update `DB_PASSWORD` in `.env`.
+4. Update `DB_PASSWORD`, `JWT_SECRET`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` in
+   `.env`.
 5. Run the API:
 
 ```powershell
@@ -58,13 +60,11 @@ Available development endpoints:
 - Social links: `GET /api/v1/social-links`
 - Resume profile: `GET /api/v1/resume-profile`
 - Contact submission: `POST /api/v1/contact-messages`
-- Admin CRUD: `/api/v1/admin/**`
+- Admin login: `POST /api/v1/auth/login`
+- Admin CRUD: `/api/v1/admin/**` with `Authorization: Bearer <token>`
 - Actuator health: `GET /api/v1/actuator/health`
 - OpenAPI JSON: `GET /api-docs`
 - Swagger UI: `/swagger-ui.html`
-
-Admin routes are intentionally open during foundation development. Add
-authentication and authorization before exposing them in production.
 
 ## Tests
 
@@ -73,8 +73,8 @@ authentication and authorization before exposing them in production.
 ```
 
 The integration suite starts a real embedded PostgreSQL process, applies Flyway
-migrations, boots the HTTP server, and verifies public content, CRUD, contact,
-validation, error handling, OpenAPI, and CORS.
+migrations, boots the HTTP server, and verifies authentication, protected CRUD,
+public content, contact messages, validation, error handling, OpenAPI, and CORS.
 
 ## Package Structure
 

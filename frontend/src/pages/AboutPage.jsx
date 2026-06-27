@@ -1,8 +1,14 @@
 import PageTransition from '../components/PageTransition.jsx';
+import Seo from '../components/Seo.jsx';
 
 function AboutPage() {
   return (
     <PageTransition>
+      <Seo
+        description="Learn about Kavya's full-stack development journey, technical focus, experience, and values."
+        path="/about"
+        title="About Kavya | Developer Portfolio"
+      />
       <section className="mx-auto grid max-w-7xl gap-6 py-10 lg:grid-cols-[0.8fr_1.2fr] lg:py-16">
         <div className="glass-panel rounded-[2rem] p-6 sm:p-8">
           <p className="text-sm font-semibold text-teal-600 dark:text-teal-300">About</p>

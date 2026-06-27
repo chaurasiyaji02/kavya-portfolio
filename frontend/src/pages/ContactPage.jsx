@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PageTransition from '../components/PageTransition.jsx';
 import { usePortfolioData } from '../components/PortfolioDataProvider.jsx';
+import Seo from '../components/Seo.jsx';
 import { submitContactMessage } from '../lib/api.js';
 
 const initialForm = {
@@ -37,6 +38,11 @@ function ContactPage() {
 
   return (
     <PageTransition>
+      <Seo
+        description="Contact Kavya about full-stack development opportunities, internships, projects, and collaborations."
+        path="/contact"
+        title="Contact Kavya | Developer Portfolio"
+      />
       <section className="mx-auto grid max-w-7xl gap-8 py-10 lg:grid-cols-[0.78fr_1.22fr] lg:py-16">
         <div className="lg:pt-8">
           <p className="text-sm font-semibold text-teal-600 dark:text-teal-300">Contact</p>

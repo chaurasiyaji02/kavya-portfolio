@@ -4,7 +4,11 @@ function PortfolioDataStatus({ error, loading, onRetry }) {
   }
 
   return (
-    <div className="mx-auto mb-4 flex max-w-7xl flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-900/10 bg-white/55 px-4 py-3 text-sm shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/55">
+    <div
+      aria-live="polite"
+      className="mx-auto mb-4 flex max-w-7xl flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-900/10 bg-white/55 px-4 py-3 text-sm shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/55"
+      role="status"
+    >
       <p className="text-slate-600 dark:text-slate-300">
         {loading ? 'Loading the latest portfolio content...' : error}
       </p>
