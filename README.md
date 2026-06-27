@@ -21,7 +21,6 @@ kavya-portfolio/
 
 - Node.js 20+
 - Java 21+
-- Maven 3.9+
 - PostgreSQL 15+
 
 ## Environment Setup
@@ -50,10 +49,12 @@ The frontend runs on `http://localhost:5173` by default.
 
 ```powershell
 Set-Location backend
-mvn spring-boot:run
+.\mvnw.cmd spring-boot:run
 ```
 
 The backend runs on `http://localhost:8080` by default.
+See [backend/README.md](backend/README.md) for database creation, API endpoints,
+Swagger documentation, and integration test instructions.
 
 ## Database
 
@@ -63,8 +64,10 @@ Create a local PostgreSQL database before starting the backend:
 CREATE DATABASE kavya_portfolio;
 ```
 
-See [docs/database.md](docs/database.md) for planned database conventions.
+See [docs/database.md](docs/database.md) for database conventions.
 
 ## Development Notes
 
-This is an initial project scaffold only. Portfolio pages, admin tools, content models, authentication, and deployment workflows are intentionally left for future iterations.
+The backend currently provides a versioned foundation and connection-check API.
+Portfolio content APIs, authentication, and admin workflows remain intentionally
+out of scope.

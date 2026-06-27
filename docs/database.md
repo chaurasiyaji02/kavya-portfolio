@@ -2,17 +2,21 @@
 
 ## Local Database
 
-Default local database name:
+Create a dedicated local user and database:
 
-```text
-kavya_portfolio
+```sql
+create user portfolio_user with password 'replace_with_a_secure_password';
+create database kavya_portfolio owner portfolio_user;
 ```
+
+Copy `backend/.env.example` to `backend/.env` and set the matching password.
 
 ## Conventions
 
 - Use PostgreSQL-specific features only when they simplify the model meaningfully.
 - Add schema changes as versioned migrations in `backend/src/main/resources/db/migration`.
-- Keep seed/demo data separate from production migrations.
+- Keep portfolio seed/demo data separate from production migrations.
 - Prefer clear table names such as `projects`, `skills`, `experiences`, and `contact_messages`.
 
-No schema has been created yet because this scaffold does not implement portfolio features.
+The initial migration creates only the `system_messages` table used by the sample
+connection endpoint.

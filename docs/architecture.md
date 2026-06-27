@@ -14,6 +14,17 @@ The project is split into three main layers:
 - The backend should keep controllers thin and place business rules in service classes.
 - Database schema changes should be added as migrations under `backend/src/main/resources/db/migration`.
 
+## Backend Boundaries
+
+The backend uses versioned routes under `/api/v1` and separates HTTP contracts,
+business logic, persistence, and JPA models into controller, DTO, service,
+repository, and entity packages. Flyway owns schema creation while Hibernate runs
+in validation mode.
+
+Spring Security is present as infrastructure only. Requests are currently stateless
+and permitted without authentication until a dedicated authentication design is
+implemented.
+
 ## Future Modules
 
 - Profile and hero content
