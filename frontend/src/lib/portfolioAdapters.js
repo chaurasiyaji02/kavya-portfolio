@@ -58,6 +58,7 @@ export function adaptPortfolioContent(apiData) {
     techStack: project.technologies,
     githubUrl: project.githubUrl,
     liveUrl: project.liveUrl,
+    imageUrl: project.imageUrl,
     accent: projectAccents[index % projectAccents.length],
   }));
   const education = apiData.education.map((item) => ({

@@ -160,6 +160,7 @@ class PortfolioApplicationIntegrationTest {
         "title", "Integration Test Project",
         "slug", "integration-test-project",
         "description", "Created by the PostgreSQL-backed integration test.",
+        "imageUrl", "https://example.com/project-preview.png",
         "status", "COMPLETED",
         "featured", false,
         "displayOrder", 99,
@@ -178,6 +179,7 @@ class PortfolioApplicationIntegrationTest {
         "title", "Updated Integration Project",
         "slug", "integration-test-project",
         "description", "Updated through the admin API.",
+        "imageUrl", "https://example.com/project-preview-updated.png",
         "status", "COMPLETED",
         "featured", true,
         "displayOrder", 98,
@@ -190,6 +192,8 @@ class PortfolioApplicationIntegrationTest {
     assertThat(updated.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(updated.getBody()).isNotNull();
     assertThat(updated.getBody().path("data").path("featured").asBoolean()).isTrue();
+    assertThat(updated.getBody().path("data").path("imageUrl").asText())
+        .isEqualTo("https://example.com/project-preview-updated.png");
     assertThat(updated.getBody().path("data").path("technologies").size()).isEqualTo(2);
 
     ResponseEntity<Void> deleted = restTemplate.exchange(
@@ -204,6 +208,118 @@ class PortfolioApplicationIntegrationTest {
     assertThat(missing.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     assertThat(missing.getBody()).isNotNull();
     assertThat(missing.getBody().path("error").asText()).isEqualTo("Not Found");
+  }
+
+  @Test
+  void supportsCrudForEveryAdminContentResource() {
+    assertAdminCrud(
+        "skills",
+        Map.of("category", "Testing", "name", "Test Skill", "proficiencyLevel", 70, "displayOrder", 90),
+        Map.of("category", "Testing", "name", "Updated Skill", "proficiencyLevel", 80, "displayOrder", 91),
+        "name",
+        "Updated Skill");
+    assertAdminCrud(
+        "education",
+        Map.of(
+            "institution", "Test University",
+            "degree", "Bachelor of Testing",
+            "fieldOfStudy", "Software Quality",
+            "startDate", "2022-01-01",
+            "endDate", "2025-01-01",
+            "description", "Initial education",
+            "displayOrder", 90),
+        Map.of(
+            "institution", "Updated University",
+            "degree", "Bachelor of Testing",
+            "fieldOfStudy", "Software Quality",
+            "startDate", "2022-01-01",
+            "endDate", "2025-01-01",
+            "description", "Updated education",
+            "displayOrder", 91),
+        "institution",
+        "Updated University");
+    assertAdminCrud(
+        "certifications",
+        Map.of(
+            "title", "Test Certification",
+            "issuer", "Test Issuer",
+            "issueDate", "2025-01-01",
+            "credentialId", "TEST-1",
+            "credentialUrl", "https://example.com/test-credential",
+            "displayOrder", 90),
+        Map.of(
+            "title", "Updated Certification",
+            "issuer", "Test Issuer",
+            "issueDate", "2025-01-01",
+            "credentialId", "TEST-2",
+            "credentialUrl", "https://example.com/test-credential",
+            "displayOrder", 91),
+        "title",
+        "Updated Certification");
+    assertAdminCrud(
+        "experiences",
+        Map.of(
+            "organization", "Test Studio",
+            "role", "Test Intern",
+            "location", "Remote",
+            "startDate", "2025-01-01",
+            "endDate", "2025-02-01",
+            "currentRole", false,
+            "description", "Initial experience",
+            "displayOrder", 90,
+            "highlights", List.of("Created tests")),
+        Map.of(
+            "organization", "Updated Studio",
+            "role", "Test Intern",
+            "location", "Remote",
+            "startDate", "2025-01-01",
+            "endDate", "2025-02-01",
+            "currentRole", false,
+            "description", "Updated experience",
+            "displayOrder", 91,
+            "highlights", List.of("Created tests", "Verified APIs")),
+        "organization",
+        "Updated Studio");
+    assertAdminCrud(
+        "social-links",
+        Map.of(
+            "platform", "Test",
+            "displayLabel", "Test Profile",
+            "url", "https://example.com/test-profile",
+            "active", false,
+            "displayOrder", 90),
+        Map.of(
+            "platform", "Test",
+            "displayLabel", "Updated Profile",
+            "url", "https://example.com/updated-profile",
+            "active", false,
+            "displayOrder", 91),
+        "displayLabel",
+        "Updated Profile");
+    assertAdminCrud(
+        "resume-profiles",
+        Map.of(
+            "fullName", "Test Admin",
+            "headline", "Test Profile",
+            "summary", "A profile created by integration tests.",
+            "email", "profile-test@example.com",
+            "phone", "+91 11111 11111",
+            "location", "India",
+            "resumeUrl", "https://example.com/resume",
+            "photoUrl", "https://example.com/photo.png",
+            "active", false),
+        Map.of(
+            "fullName", "Updated Admin",
+            "headline", "Updated Profile",
+            "summary", "A profile updated by integration tests.",
+            "email", "profile-test@example.com",
+            "phone", "+91 11111 11111",
+            "location", "India",
+            "resumeUrl", "https://example.com/resume",
+            "photoUrl", "https://example.com/photo-updated.png",
+            "active", false),
+        "fullName",
+        "Updated Admin");
   }
 
   @Test
@@ -295,5 +411,38 @@ class PortfolioApplicationIntegrationTest {
     HttpHeaders headers = new HttpHeaders();
     headers.setBearerAuth(token);
     return headers;
+  }
+
+  private void assertAdminCrud(
+      String resource,
+      Map<String, Object> createRequest,
+      Map<String, Object> updateRequest,
+      String updatedField,
+      String expectedValue) {
+    ResponseEntity<JsonNode> created = restTemplate.exchange(
+        "/api/v1/admin/" + resource,
+        HttpMethod.POST,
+        new HttpEntity<>(createRequest, authorizationHeaders()),
+        JsonNode.class);
+    assertThat(created.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    assertThat(created.getBody()).isNotNull();
+    long id = created.getBody().path("data").path("id").asLong();
+
+    ResponseEntity<JsonNode> updated = restTemplate.exchange(
+        "/api/v1/admin/" + resource + "/" + id,
+        HttpMethod.PUT,
+        new HttpEntity<>(updateRequest, authorizationHeaders()),
+        JsonNode.class);
+    assertThat(updated.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(updated.getBody()).isNotNull();
+    assertThat(updated.getBody().path("data").path(updatedField).asText())
+        .isEqualTo(expectedValue);
+
+    ResponseEntity<Void> deleted = restTemplate.exchange(
+        "/api/v1/admin/" + resource + "/" + id,
+        HttpMethod.DELETE,
+        new HttpEntity<>(authorizationHeaders()),
+        Void.class);
+    assertThat(deleted.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
   }
 }

@@ -19,6 +19,7 @@ public final class ProjectDto {
       @NotBlank @Size(max = 2000) String description,
       @Size(max = 500) @Pattern(regexp = "^https?://.+") String githubUrl,
       @Size(max = 500) @Pattern(regexp = "^https?://.+") String liveUrl,
+      @Size(max = 500) @Pattern(regexp = "^https?://.+") String imageUrl,
       @NotNull ProjectStatus status,
       boolean featured,
       @PositiveOrZero int displayOrder,
@@ -26,6 +27,6 @@ public final class ProjectDto {
 
   public record Response(
       Long id, String title, String slug, String description, String githubUrl,
-      String liveUrl, ProjectStatus status, boolean featured, int displayOrder,
+      String liveUrl, String imageUrl, ProjectStatus status, boolean featured, int displayOrder,
       List<String> technologies, Instant createdAt, Instant updatedAt) {}
 }

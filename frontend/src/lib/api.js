@@ -7,10 +7,11 @@ import {
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api/v1').replace(/\/$/, '');
 
 export class ApiError extends Error {
-  constructor(message, status) {
+  constructor(message, status, validationErrors = {}) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
+    this.validationErrors = validationErrors;
   }
 }
 
@@ -36,6 +37,7 @@ export async function apiRequest(path, options = {}) {
     throw new ApiError(
       payload?.message ?? `API request failed with status ${response.status}`,
       response.status,
+      payload?.validationErrors,
     );
   }
 
@@ -78,4 +80,35 @@ export function loginAdmin(credentials) {
 
 export function getAdminContactMessages() {
   return apiRequest('/admin/contact-messages');
+}
+
+export function getAdminResource(resource) {
+  const publicListResources = new Set([
+    'projects',
+    'skills',
+    'education',
+    'certifications',
+    'experiences',
+  ]);
+  return apiRequest(`${publicListResources.has(resource) ? '' : '/admin'}/${resource}`);
+}
+
+export function createAdminResource(resource, payload) {
+  return apiRequest(`/admin/${resource}`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export function updateAdminResource(resource, id, payload) {
+  return apiRequest(`/admin/${resource}/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  });
+}
+
+export function deleteAdminResource(resource, id) {
+  return apiRequest(`/admin/${resource}/${id}`, {
+    method: 'DELETE',
+  });
 }

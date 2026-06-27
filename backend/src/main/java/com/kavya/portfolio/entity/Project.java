@@ -31,6 +31,9 @@ public class Project extends BaseEntity {
   @Column(name = "live_url", length = 500)
   private String liveUrl;
 
+  @Column(name = "image_url", length = 500)
+  private String imageUrl;
+
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 30)
   private ProjectStatus status;
@@ -57,6 +60,8 @@ public class Project extends BaseEntity {
   public void setGithubUrl(String githubUrl) { this.githubUrl = githubUrl; }
   public String getLiveUrl() { return liveUrl; }
   public void setLiveUrl(String liveUrl) { this.liveUrl = liveUrl; }
+  public String getImageUrl() { return imageUrl; }
+  public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
   public ProjectStatus getStatus() { return status; }
   public void setStatus(ProjectStatus status) { this.status = status; }
   public boolean isFeatured() { return featured; }

@@ -42,7 +42,7 @@ function AdminLoginPage() {
             Portfolio control room.
           </h1>
           <p className="mt-5 text-base leading-8 text-slate-600 dark:text-slate-300">
-            Sign in to the protected administration shell. Content editing tools will arrive in a later build.
+            Sign in to manage portfolio content, ordering, resume details, and visitor messages.
           </p>
         </div>
 

@@ -22,7 +22,15 @@ function ProjectsSection({ projects }) {
               whileHover={{ rotateX: 4, rotateY: -5, y: -8 }}
               transition={{ type: 'spring', stiffness: 220, damping: 18 }}
             >
-              <div className={`absolute inset-x-0 top-0 h-36 bg-gradient-to-br ${project.accent}`} />
+              {project.imageUrl ? (
+                <img
+                  alt=""
+                  className="absolute inset-x-0 top-0 h-36 w-full object-cover opacity-20 transition duration-500 group-hover:scale-105 group-hover:opacity-30"
+                  src={project.imageUrl}
+                />
+              ) : (
+                <div className={`absolute inset-x-0 top-0 h-36 bg-gradient-to-br ${project.accent}`} />
+              )}
               <div className="relative">
                 <div className="flex items-start justify-between gap-4">
                   <div>
