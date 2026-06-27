@@ -18,5 +18,17 @@ Copy `backend/.env.example` to `backend/.env` and set the matching password.
 - Keep portfolio seed/demo data separate from production migrations.
 - Prefer clear table names such as `projects`, `skills`, `experiences`, and `contact_messages`.
 
-The initial migration creates only the `system_messages` table used by the sample
-connection endpoint.
+The migrations currently manage:
+
+- `system_messages`
+- `projects` and `project_technologies`
+- `skills`
+- `education`
+- `certifications`
+- `experiences` and `experience_highlights`
+- `social_links`
+- `resume_profiles`
+- `contact_messages`
+
+Portfolio sample records are inserted by the content migration. Contact messages
+are never seeded.

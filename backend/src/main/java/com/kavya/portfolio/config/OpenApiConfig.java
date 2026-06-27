@@ -14,7 +14,7 @@ public class OpenApiConfig {
     return new OpenAPI()
         .info(new Info()
             .title("Kavya Portfolio API")
-            .description("Versioned REST API for the Kavya portfolio platform.")
+            .description("Public portfolio content and contact APIs, with open admin CRUD routes for development.")
             .version("v1")
             .contact(new Contact().name("Kavya Chaurasiya")));
   }

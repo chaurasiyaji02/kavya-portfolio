@@ -50,9 +50,21 @@ Available development endpoints:
 
 - Health: `GET /api/v1/health`
 - Sample connection: `GET /api/v1/sample`
+- Projects: `GET /api/v1/projects`
+- Skills: `GET /api/v1/skills`
+- Education: `GET /api/v1/education`
+- Certifications: `GET /api/v1/certifications`
+- Experience: `GET /api/v1/experiences`
+- Social links: `GET /api/v1/social-links`
+- Resume profile: `GET /api/v1/resume-profile`
+- Contact submission: `POST /api/v1/contact-messages`
+- Admin CRUD: `/api/v1/admin/**`
 - Actuator health: `GET /api/v1/actuator/health`
 - OpenAPI JSON: `GET /api-docs`
 - Swagger UI: `/swagger-ui.html`
+
+Admin routes are intentionally open during foundation development. Add
+authentication and authorization before exposing them in production.
 
 ## Tests
 
@@ -61,7 +73,8 @@ Available development endpoints:
 ```
 
 The integration suite starts a real embedded PostgreSQL process, applies Flyway
-migrations, boots the HTTP server, and verifies the database, API, OpenAPI, and CORS.
+migrations, boots the HTTP server, and verifies public content, CRUD, contact,
+validation, error handling, OpenAPI, and CORS.
 
 ## Package Structure
 

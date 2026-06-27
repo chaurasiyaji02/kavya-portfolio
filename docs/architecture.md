@@ -25,6 +25,10 @@ Spring Security is present as infrastructure only. Requests are currently statel
 and permitted without authentication until a dedicated authentication design is
 implemented.
 
+Public content reads live under `/api/v1/{resource}`. Content mutations and contact
+message management live under `/api/v1/admin/**`; these routes remain open only
+until admin authentication is implemented.
+
 ## Future Modules
 
 - Profile and hero content

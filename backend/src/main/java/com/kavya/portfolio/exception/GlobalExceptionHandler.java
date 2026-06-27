@@ -8,11 +8,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,6 +27,36 @@ public class GlobalExceptionHandler {
       ResourceNotFoundException exception,
       HttpServletRequest request) {
     return buildResponse(HttpStatus.NOT_FOUND, exception.getMessage(), request, Map.of());
+  }
+
+  @ExceptionHandler(BadRequestException.class)
+  ResponseEntity<ErrorResponse> handleBadRequest(
+      BadRequestException exception,
+      HttpServletRequest request) {
+    return buildResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), request, Map.of());
+  }
+
+  @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class})
+  ResponseEntity<ErrorResponse> handleMalformedRequest(
+      Exception exception,
+      HttpServletRequest request) {
+    return buildResponse(
+        HttpStatus.BAD_REQUEST,
+        "The request body or parameter format is invalid.",
+        request,
+        Map.of());
+  }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  ResponseEntity<ErrorResponse> handleConflict(
+      DataIntegrityViolationException exception,
+      HttpServletRequest request) {
+    LOGGER.warn("Database constraint rejected a request", exception);
+    return buildResponse(
+        HttpStatus.CONFLICT,
+        "The request conflicts with an existing record.",
+        request,
+        Map.of());
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
